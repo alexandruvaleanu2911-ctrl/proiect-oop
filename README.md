@@ -1,3 +1,9 @@
+# The Minotaur's Lair
+
+A dungeon crawler game set in the legendary labyrinth of the Minotaur. The player finds themselves trapped deep within an ever-shifting maze, with only their wits to guide them. Navigate through dark corridors, avoid deadly traps and find the exit before the Minotaur hunts you down.
+Every run is unique — the maze is procedurally generated using the DFS (recursive backtracker) algorithm, ensuring no two playthroughs are the same. 
+As you descend deeper into the labyrinth, you will encounter increasingly dangerous enemies lurking in the shadows. Each room holds new threats — from lost wanderers and skeleton guards in the upper levels, to cursed knights and shadow beasts in the depths below. Every enemy is harder to defeat than the last, pushing your skills to the limit. At the very heart of the labyrinth awaits the final challenge: the Minotaur himself, an unstoppable force that has claimed countless lives.
+
 # Nu primesc notă pentru că nu am pus titlu și descriere
 
 ### Folosiți template-ul corespunzător grupei voastre!
