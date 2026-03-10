@@ -4,6 +4,10 @@ A dungeon crawler game set in the legendary labyrinth of the Minotaur. The playe
 Every run is unique — the maze is procedurally generated using the DFS (recursive backtracker) algorithm, ensuring no two playthroughs are the same. 
 As you descend deeper into the labyrinth, you will encounter increasingly dangerous enemies lurking in the shadows. Each room holds new threats — from lost wanderers and skeleton guards in the upper levels, to cursed knights and shadow beasts in the depths below. Every enemy is harder to defeat than the last, pushing your skills to the limit. At the very heart of the labyrinth awaits the final challenge: the Minotaur himself, an unstoppable force that has claimed countless lives.
 
+
+# Cerințe
+
+
 ### Tema 0
 
 - [ ] Nume proiect (poate fi schimbat ulterior)
