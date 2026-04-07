@@ -1,55 +1,168 @@
 #include <iostream>
-#include <array>
-#include "include/Example.h"
-// This also works if you do not want `include/`, but some editors might not like it
-// #include "Example.h"
+#include <vector>
+#include <stack>
+#include <algorithm>
+#include <random>
+#include <string>
+
+class Pozitie {
+    int x, y;
+public:
+    Pozitie(int _x = 0, int _y = 0) : x(_x), y(_y) {}
+
+    int getX() const { return x; }
+    int getY() const { return y; }
+
+    friend std::ostream& operator<<(std::ostream& os, const Pozitie& p) {
+        os << "(" << p.x << "," << p.y << ")";
+        return os;
+    }
+};
+
+class Celula {
+    Pozitie pos;
+    bool esteZid;
+public:
+    Celula(int x = 0, int y = 0, bool zid = true) : pos(x, y), esteZid(zid) {}
+
+    void spargeZid() { esteZid = false; }
+    bool eWorldWall() const { return esteZid; }
+
+    friend std::ostream& operator<<(std::ostream& os, const Celula& c) {
+        os << (c.esteZid ? "█" : " ");
+        return os;
+    }
+};
+
+class Labirint {
+    int latime, inaltime;
+    std::vector<std::vector<Celula>> grija;
+
+    void initializeazaGrid() {
+        for (int i = 0; i < inaltime; ++i) {
+            std::vector<Celula> linie;
+            for (int j = 0; j < latime; ++j) {
+                linie.emplace_back(j, i, true);
+            }
+            grija.push_back(linie);
+        }
+    }
+
+    std::vector<Pozitie> gasesteVeciniVizitabili(const Pozitie& p) const {
+        std::vector<Pozitie> vecini;
+        int dx[] = {0, 0, 2, -2};
+        int dy[] = {2, -2, 0, 0};
+
+        for (int i = 0; i < 4; i++) {
+            int nx = p.getX() + dx[i];
+            int ny = p.getY() + dy[i];
+
+            if (nx > 0 && nx < latime - 1 && ny > 0 && ny < inaltime - 1) {
+                if (grija[ny][nx].eWorldWall()) {
+                    vecini.emplace_back(nx, ny);
+                }
+            }
+        }
+        return vecini;
+    }
+
+public:
+    Labirint(int w, int h) : latime(w), inaltime(h) {
+        initializeazaGrid();
+    }
+
+    void genereaza(int startX, int startY) {
+        std::stack<Pozitie> stack;
+        std::mt19937 rng(std::random_device{}());
+
+        grija[startY][startX].spargeZid();
+        stack.push(Pozitie(startX, startY));
+
+        while (!stack.empty()) {
+            Pozitie curent = stack.top();
+            std::vector<Pozitie> vecini = gasesteVeciniVizitabili(curent);
+
+            if (!vecini.empty()) {
+                std::shuffle(vecini.begin(), vecini.end(), rng);
+                Pozitie urmator = vecini[0];
+
+                int pereteX = (curent.getX() + urmator.getX()) / 2;
+                int pereteY = (curent.getY() + urmator.getY()) / 2;
+
+                grija[urmator.getY()][urmator.getX()].spargeZid();
+                grija[pereteY][pereteX].spargeZid();
+
+                stack.push(urmator);
+            } else {
+                stack.pop();
+            }
+        }
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Labirint& l) {
+        for (const auto& linie : l.grija) {
+            for (const auto& cel : linie) {
+                os << cel;
+            }
+            os << "\n";
+        }
+        return os;
+    }
+};
+
+class JocDungeon {
+    std::string numeJucator;
+    Labirint* labirint;
+public:
+    JocDungeon(std::string nume, int w, int h) : numeJucator(nume) {
+        labirint = new Labirint(w, h);
+    }
+
+    ~JocDungeon() {
+        delete labirint;
+    }
+
+    JocDungeon(const JocDungeon& altul) : numeJucator(altul.numeJucator) {
+        labirint = new Labirint(*altul.labirint);
+    }
+
+    JocDungeon& operator=(const JocDungeon& altul) {
+        if (this != &altul) {
+            delete labirint;
+            numeJucator = altul.numeJucator;
+            labirint = new Labirint(*altul.labirint);
+        }
+        return *this;
+    }
+
+    double calculeazaDificultate() const {
+        return 0.5;
+    }
+
+    void initSesiune() {
+        labirint->genereaza(1, 1);
+        std::cout << "Sesiune pornita pentru: " << numeJucator << "\n";
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const JocDungeon& j) {
+        os << "Jucator: " << j.numeJucator << "\nDificultate: " << j.calculeazaDificultate() << "\n";
+        os << *j.labirint;
+        return os;
+    }
+};
 
 int main() {
-    std::cout << "Hello, world!\n";
-    Example e1;
-    e1.g();
-    std::array<int, 100> v{};
-    int nr;
-    std::cout << "Introduceți nr: ";
-    /////////////////////////////////////////////////////////////////////////
-    /// Observație: dacă aveți nevoie să citiți date de intrare de la tastatură,
-    /// dați exemple de date de intrare folosind fișierul tastatura.txt
-    /// Trebuie să aveți în fișierul tastatura.txt suficiente date de intrare
-    /// (în formatul impus de voi) astfel încât execuția programului să se încheie.
-    /// De asemenea, trebuie să adăugați în acest fișier date de intrare
-    /// pentru cât mai multe ramuri de execuție.
-    /// Dorim să facem acest lucru pentru a automatiza testarea codului, fără să
-    /// mai pierdem timp de fiecare dată să introducem de la zero aceleași date de intrare.
-    ///
-    /// Pe GitHub Actions (bife), fișierul tastatura.txt este folosit
-    /// pentru a simula date introduse de la tastatură.
-    /// Bifele verifică dacă programul are erori de compilare, erori de memorie și memory leaks.
-    ///
-    /// Dacă nu puneți în tastatura.txt suficiente date de intrare, îmi rezerv dreptul să vă
-    /// testez codul cu ce date de intrare am chef și să nu pun notă dacă găsesc vreun bug.
-    /// Impun această cerință ca să învățați să faceți un demo și să arătați părțile din
-    /// program care merg (și să le evitați pe cele care nu merg).
-    ///
-    /////////////////////////////////////////////////////////////////////////
-    std::cin >> nr;
-    /////////////////////////////////////////////////////////////////////////
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "v[" << i << "] = ";
-        std::cin >> v[i];
-    }
-    std::cout << "\n\n";
-    std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "- " << v[i] << "\n";
-    }
-    ///////////////////////////////////////////////////////////////////////////
-    /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
-    /// alt fișier propriu cu ce alt nume doriți.
-    /// Exemplu:
-    /// std::ifstream fis("date.txt");
-    /// for(int i = 0; i < nr2; ++i)
-    ///     fis >> v2[i];
-    ///
-    ///////////////////////////////////////////////////////////////////////////
+    std::string nume;
+    int dim;
+
+    if (!(std::cin >> nume >> dim)) return 0;
+
+    JocDungeon joculMeu(nume, dim, dim);
+    joculMeu.initSesiune();
+
+    JocDungeon copieJoc = joculMeu;
+
+    std::cout << joculMeu;
+
     return 0;
 }
