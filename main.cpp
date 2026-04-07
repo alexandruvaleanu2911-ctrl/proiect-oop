@@ -8,7 +8,7 @@
 class Pozitie {
     int x, y;
 public:
-    Pozitie(int _x = 0, int _y = 0) : x(_x), y(_y) {}
+   explicit Pozitie(int _x = 0, int _y = 0) : x(_x), y(_y) {}
 
     int getX() const { return x; }
     int getY() const { return y; }
@@ -23,7 +23,7 @@ class Celula {
     Pozitie pos;
     bool esteZid;
 public:
-    Celula(int x = 0, int y = 0, bool zid = true) : pos(x, y), esteZid(zid) {}
+    explicit Celula(int x = 0, int y = 0, bool zid = true) : pos(x, y), esteZid(zid) {}
 
     void spargeZid() { esteZid = false; }
     bool eWorldWall() const { return esteZid; }
@@ -50,8 +50,8 @@ class Labirint {
 
     std::vector<Pozitie> gasesteVeciniVizitabili(const Pozitie& p) const {
         std::vector<Pozitie> vecini;
-        int dx[] = {0, 0, 2, -2};
-        int dy[] = {2, -2, 0, 0};
+        const int dx[] = {0, 0, 2, -2};
+        const int dy[] = {2, -2, 0, 0};
 
         for (int i = 0; i < 4; i++) {
             int nx = p.getX() + dx[i];
@@ -114,7 +114,7 @@ class JocDungeon {
     std::string numeJucator;
     Labirint* labirint;
 public:
-    JocDungeon(std::string nume, int w, int h) : numeJucator(nume) {
+    JocDungeon(const std::string& nume, int w, int h) : numeJucator(nume) {
         labirint = new Labirint(w, h);
     }
 
@@ -135,7 +135,7 @@ public:
         return *this;
     }
 
-    double calculeazaDificultate() const {
+    static double calculeazaDificultate() const {
         return 0.5;
     }
 
