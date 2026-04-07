@@ -8,7 +8,7 @@
 class Pozitie {
     int x, y;
 public:
-   explicit Pozitie(int _x = 0, int _y = 0) : x(_x), y(_y) {}
+    explicit Pozitie(int _x = 0, int _y = 0) : x(_x), y(_y) {}
 
     int getX() const { return x; }
     int getY() const { return y; }
@@ -135,7 +135,7 @@ public:
         return *this;
     }
 
-    static double calculeazaDificultate() const {
+    static double calculeazaDificultate() {
         return 0.5;
     }
 
@@ -145,7 +145,7 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const JocDungeon& j) {
-        os << "Jucator: " << j.numeJucator << "\nDificultate: " << j.calculeazaDificultate() << "\n";
+        os << "Jucator: " << j.numeJucator << "\nDificultate: " << JocDungeon::calculeazaDificultate() << "\n";
         os << *j.labirint;
         return os;
     }
@@ -161,8 +161,7 @@ int main() {
     joculMeu.initSesiune();
 
     JocDungeon copieJoc = joculMeu;
-
-    std::cout << joculMeu;
+    std::cout << copieJoc;
 
     return 0;
 }
