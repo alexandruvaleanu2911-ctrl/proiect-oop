@@ -59,6 +59,12 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         labirint.h
         jocdungeon.cpp
         jocdungeon.h
+        entitate.cpp
+        entitate.h
+        jucator.cpp
+        jucator.h
+        inamic.cpp
+        inamic.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
