@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "JocDungeon.h"
+#include "jocdungeon.h"
 
 int main() {
     std::string nume;
