@@ -5,8 +5,7 @@
 
 class Spear : public Arma {
 public:
-    // Constructor - default e o arma destul de buna
-    Spear(int v = 75, int d = 35);
+    explicit Spear(int v = 75, int d = 35);
 
     void foloseste() override;
     void afisare() const override;

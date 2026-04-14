@@ -1,6 +1,7 @@
 #include "arma.h"
+#include <iostream>
 
-Arma::Arma(std::string n, int v, int d) : Obiect(n, v), damage(d) {}
+Arma::Arma(const std::string& n, int v, int d) : Obiect(n, v), damage(d) {}
 
 void Arma::afisare() const {
     Obiect::afisare();

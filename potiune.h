@@ -6,7 +6,7 @@
 class Potiune : public Obiect {
     int puncteViata;
 public:
-    Potiune(std::string n, int v, int hp);
+    Potiune(const std::string& n, int v, int hp);
     void foloseste() override;
     void afisare() const override;
 };

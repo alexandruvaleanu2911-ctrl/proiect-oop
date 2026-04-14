@@ -47,6 +47,12 @@ int main() {
     erou.adaugaXP(150);
     erou.setPozitie(monstru.getPozitie());
 
+    std::cout << "\n--- TEST REINCARCARE ---" << std::endl;
+    Pistoale* deTest = new Pistoale(100, 40, 0);
+    deTest->reincarca();
+    deTest->foloseste();
+    delete deTest;
+
     std::cout << "\n--- TEST COPIERE JOC ---" << std::endl;
     JocDungeon copieJoc = joculMeu;
 
