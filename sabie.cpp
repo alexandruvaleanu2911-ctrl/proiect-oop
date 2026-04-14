@@ -1,13 +1,13 @@
-#ifndef SABIE_H
-#define SABIE_H
+#include "sabie.h"
+#include <iostream>
 
-#include "arma.h"
+Sabie::Sabie(int v, int d) : Arma("Sabie de otel", v, d) {}
 
-class Sabie : public Arma {
-public:
-    Sabie(int v = 50, int d = 30);
-    void foloseste() override;
-    void afisare() const override;
-};
+void Sabie::foloseste() {
+    std::cout << "Tai cu sabia! Lovitura a produs " << damage << " damage.\n";
+}
 
-#endif
+void Sabie::afisare() const {
+    Arma::afisare();
+    std::cout << " [Tip: Arma de contact]\n";
+}
