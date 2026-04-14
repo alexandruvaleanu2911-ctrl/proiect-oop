@@ -65,6 +65,20 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         jucator.h
         inamic.cpp
         inamic.h
+        obiect.cpp
+        obiect.h
+        potiune.cpp
+        potiune.h
+        inventar.cpp
+        inventar.h
+        arma.cpp
+        arma.h
+        sabie.cpp
+        sabie.h
+        pistoale.cpp
+        pistoale.h
+        spear.cpp
+        spear.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
