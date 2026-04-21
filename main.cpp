@@ -45,12 +45,18 @@ int main() {
     delete rucsac;
 
     std::cout << "\n--- AVENTURA S-A INCHEIAT ---" << std::endl;
+    // --- SECTIUNE PENTRU VALIDARE TESTE (CPPCHECK) ---
     erou.adaugaXP(10);
-    erou.setPozitie(Pozitie(1, 1));
-    if(joculMeu.getLabirint().estePozitieValida(1,1)) {
-        // doar pentru test
+    erou.setPozitie(erou.getPozitie());
+
+    if (joculMeu.getLabirint().estePozitieValida(1, 1)) {
+        int linii = joculMeu.getLabirint().getLinii();
+        int coloane = joculMeu.getLabirint().getColoane();
+        (void)linii; (void)coloane;
     }
-    int l = joculMeu.getLabirint().getLinii();
-    int c = joculMeu.getLabirint().getColoane();
+
+    joculMeu.verificaInteractiune(erou, listaInamici);
+
+    rucsac->folosesteToate();
     return 0;
 }

@@ -4,7 +4,7 @@
 #include <vector>
 #include "celula.h"
 #include "pozitie.h"
-#include "inamic.h"
+class Inamic;
 
 class Labirint {
     int linii;
@@ -14,6 +14,8 @@ class Labirint {
 public:
     Labirint(int l, int c);
     void genereazaLabirint();
+
+    // Folosim pointer sau referinta pentru Inamic ca sa mearga forward declaration
     void afisareGrafica(const Pozitie& posJucator, const std::vector<Inamic*>& inamici) const;
 
     int getLinii() const { return linii; }
