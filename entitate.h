@@ -8,8 +8,10 @@ class Entitate {
 protected:
     std::string nume;
     Pozitie pos;
+    int viata;
+
 public:
-    Entitate(const std::string& n, Pozitie p);
+    Entitate(const std::string& n, Pozitie p, int v);
     virtual ~Entitate() = default;
     virtual void actioneaza() = 0;
     virtual void afisare() const;
