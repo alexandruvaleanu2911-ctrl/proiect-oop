@@ -1,9 +1,13 @@
 #include "battlelog.h"
 #include <iostream>
+#include <algorithm>
 
 std::vector<std::string> BattleLog::istoricEvenimente;
 
 void BattleLog::adaugaEveniment(const std::string& eveniment) {
+    if (istoricEvenimente.size() > 50) { // Limitare buffer pentru complexitate
+        istoricEvenimente.erase(istoricEvenimente.begin());
+    }
     istoricEvenimente.push_back(eveniment);
 }
 
@@ -12,16 +16,23 @@ void BattleLog::curataLog() {
 }
 
 void BattleLog::afiseazaLog() {
-    std::cout << "\n--- LOG DE LUPTA ---\n";
-    for (const auto& ev : istoricEvenimente) {
-        std::cout << ">> " << ev << "\n";
-    }
+    std::cout << "\n--- JURNAL DE LUPTA DETALIAT ---\n";
+    std::for_each(istoricEvenimente.begin(), istoricEvenimente.end(), [](const std::string& ev) {
+        std::cout << "[LOG]: " << ev << "\n";
+    });
 }
 
 std::string BattleLog::genereazaDescriereLupta(const std::string& numeJucator, const std::string& numeInamic, int damage) {
-    if (damage > 15) 
-        return numeJucator + " a distrus defensiva lui " + numeInamic + " cu " + std::to_string(damage) + " dmg!";
-    if (damage > 0)
-        return numeJucator + " a lovit pe " + numeInamic + " provocand " + std::to_string(damage) + " dmg.";
-    return numeInamic + " a evitat cu succes atacul lansat de " + numeJucator + ".";
+    double factorCritic = (damage > 20) ? 1.5 : 1.0;
+    int damageFinal = static_cast<int>(damage * factorCritic);
+
+    std::string rezultat = "In runda curenta: ";
+    if (damageFinal > 25) {
+        rezultat += numeJucator + " a executat o LOVITURA CRITICA asupra lui " + numeInamic + " (" + std::to_string(damageFinal) + " puncte).";
+    } else if (damageFinal > 0) {
+        rezultat += numeJucator + " a cauzat " + std::to_string(damageFinal) + " daune inamicului " + numeInamic + ".";
+    } else {
+        rezultat += "Atacul lui " + numeJucator + " a esuat lamentabil.";
+    }
+    return rezultat;
 }

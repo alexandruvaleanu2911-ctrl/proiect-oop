@@ -18,12 +18,19 @@ void Jucator::adaugaXP(int xp) {
 void Jucator::crescInNivel() {
     xpCurent -= xpNecesar;
     nivel++;
-    xpNecesar = static_cast<int>(xpNecesar * 1.2);
-    hpMax += 20;
+
+    int vechiulXP = xpNecesar;
+    xpNecesar = static_cast<int>(vechiulXP * 1.25) + (nivel * 10);
+
+    double multiplicator = 1.0 + (nivel * 0.1);
+    hpMax = static_cast<int>(hpMax * multiplicator);
     hp = hpMax;
-    atac += 5;
-    aparare += 2;
-    std::cout << "LEVEL UP! Nivel: " << nivel << "\n";
+    atac += static_cast<int>(5 * multiplicator);
+    aparare += static_cast<int>(2 * multiplicator);
+
+    std::string mesaj = ">>> NIVEL NOU: " + std::to_string(nivel) + " (XP necesar: " + std::to_string(xpNecesar) + ")";
+    std::cout << mesaj << std::endl;
+}
 }
 
 void Jucator::afisare() const {
