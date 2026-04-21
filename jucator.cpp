@@ -31,6 +31,11 @@ void Jucator::crescInNivel() {
     atac += 5;
     aparare += 2;
 
+    void Jucator::afisare() const {
+        std::cout << "[Jucator] " << nume << " | Nivel: " << nivel
+                  << " | HP: " << hp << "/" << hpMax
+                  << " | XP: " << xpCurent << "/" << xpNecesar << "\n";
+
     std::cout << "\n--- LEVEL UP! --- \n";
     std::cout << "Nivel nou: " << nivel << "\n";
     std::cout << "Statistici marite: HP: " << hpMax << ", ATK: " << atac << ", DEF: " << aparare << "\n";

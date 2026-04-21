@@ -3,12 +3,16 @@
 #include "jocdungeon.h"
 #include "jucator.h"
 #include "inamic.h"
-#include "GameData.h"
+#include "gamedata.h"
+#include "inventar.h"
+#include "pistoale.h"
 
 int main() {
     std::cout << GameData::getPovesteFundal() << "\n";
+    std::cout << "Tipuri: " << GameData::getTipuriInamici().size() << "\n";
+    std::cout << GameData::getDescriereInamic("Goblin") << "\n";
 
-    JocDungeon joc("Misiune 1", 10, 10);
+    JocDungeon joc("Test", 10, 10);
     joc.initSesiune();
 
     Jucator erou("Erou", Pozitie(1, 1));
@@ -16,7 +20,17 @@ int main() {
     erou.afisare();
     erou.adaugaXP(150);
 
-    std::cout << GameData::getMesajLevelUp(erou.getNivel()) << "\n";
+    std::cout << "Statistici: HP " << erou.getHP() << ", XP " << erou.getXP() << "/" << erou.getXPNecesar() << "\n";
+    std::cout << "Mesaj: " << GameData::getMesajLevelUp(erou.getNivel()) << "\n";
+
+    std::cout << "Labirint: " << joc.getLabirint().getLinii() << "x" << joc.getLabirint().getColoane() << "\n";
+
+    Inventar rucsac(5);
+    Pistoale* p = new Pistoale(20, 12);
+    p->reincarca();
+    rucsac.adaugaObiect(p);
+    rucsac.afiseazaTot();
+    rucsac.folosesteToate();
 
     std::vector<Inamic*> inamici;
     Inamic* goblin = new Inamic("Goblin", Pozitie(2, 2), 20);
@@ -25,7 +39,7 @@ int main() {
     goblin->afisare();
     goblin->ataca(erou);
 
-    if(joc.getLabirint().estePozitieValida(1,1)) {
+    if(joc.getLabirint().estePozitieValida(1, 1)) {
         joc.getLabirint().afisareGrafica(erou.getPozitie(), inamici);
     }
 
