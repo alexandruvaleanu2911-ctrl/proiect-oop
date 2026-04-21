@@ -1,47 +1,37 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include "jocdungeon.h"
 #include "jucator.h"
 #include "inamic.h"
-#include "inventar.h"
-#include "pistoale.h"
+#include "GameData.h"
 
 int main() {
-    std::string nume = "Erou";
-    JocDungeon joculMeu(nume, 10, 10);
-    joculMeu.initSesiune();
+    std::cout << GameData::getPovesteFundal() << "\n";
 
-    Jucator erou(nume, Pozitie(1, 1));
-    erou.adaugaXP(50);
+    JocDungeon joc("Misiune 1", 10, 10);
+    joc.initSesiune();
+
+    Jucator erou("Erou", Pozitie(1, 1));
     erou.setPozitie(Pozitie(1, 1));
+    erou.afisare();
+    erou.adaugaXP(150);
 
-    if (joculMeu.getLabirint().estePozitieValida(1, 1)) {
-        std::cout << "Pozitie valida.\n";
+    std::cout << GameData::getMesajLevelUp(erou.getNivel()) << "\n";
+
+    std::vector<Inamic*> inamici;
+    Inamic* goblin = new Inamic("Goblin", Pozitie(2, 2), 20);
+    inamici.push_back(goblin);
+
+    goblin->afisare();
+    goblin->ataca(erou);
+
+    if(joc.getLabirint().estePozitieValida(1,1)) {
+        joc.getLabirint().afisareGrafica(erou.getPozitie(), inamici);
     }
 
-    std::vector<Inamic*> listaInamici;
-    listaInamici.push_back(new Inamic("Goblin", Pozitie(2, 2), 15));
+    joc.verificaInteractiune(erou, inamici);
 
-
-    int l = joculMeu.getLabirint().getLinii();
-    int c = joculMeu.getLabirint().getColoane();
-    std::cout << "Labirint " << l << "x" << c << "\n";
-
-    joculMeu.getLabirint().afisareGrafica(erou.getPozitie(), listaInamici);
-
-    Inventar rucsac(5);
-    Pistoale* p = new Pistoale(20, 12);
-    p->reincarca();
-
-    rucsac.adaugaObiect(p);
-
-    rucsac.afiseazaTot();
-    rucsac.folosesteToate();
-
-    joculMeu.verificaInteractiune(erou, listaInamici);
-
-    for (auto* i : listaInamici) delete i;
+    for (auto* i : inamici) delete i;
 
     return 0;
 }
