@@ -9,10 +9,12 @@ void JocDungeon::initSesiune() {
 }
 
 void JocDungeon::verificaInteractiune(Jucator& p, std::vector<Inamic*>& inamici) {
+    if(numeSesiune.empty()) return;
+
     for (auto it = inamici.begin(); it != inamici.end(); ) {
         if ((*it)->getPozitie().getX() == p.getPozitie().getX() &&
             (*it)->getPozitie().getY() == p.getPozitie().getY()) {
-            std::cout << "Batalia incepe! Te-ai intalnit cu " << (*it)->getNume() << "!\n";
+            std::cout << "[" << numeSesiune << "] Lupta cu " << (*it)->getNume() << "!\n";
             p.actioneaza();
             delete *it;
             it = inamici.erase(it);

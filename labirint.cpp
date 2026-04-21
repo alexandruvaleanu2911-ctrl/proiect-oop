@@ -1,4 +1,5 @@
 #include "labirint.h"
+#include "inamic.h"
 #include <iostream>
 
 Labirint::Labirint(int l, int c) : linii(l), coloane(c) {
@@ -47,7 +48,6 @@ void Labirint::afisareGrafica(const Pozitie& posJucator, const std::vector<Inami
         }
         std::cout << "\n";
     }
-    std::cout << "\n(P = Tu, E = Inamici, ### = Perete)\n";
 }
 
 bool Labirint::estePozitieValida(int x, int y) const {
