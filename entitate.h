@@ -16,7 +16,7 @@ public:
     virtual void actioneaza() = 0;
     virtual void afisare() const;
 
-    std::string getNume() const { return nume; }
+    const std::string& getNume() const { return nume; }
     Pozitie getPozitie() const { return pos; }
     void setPozitie(Pozitie p) { pos = p; }
 };

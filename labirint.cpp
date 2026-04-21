@@ -28,7 +28,7 @@ void Labirint::afisareGrafica(const Pozitie& posJucator, const std::vector<Inami
                 std::cout << " P ";
             } else {
                 bool inamicGasit = false;
-                for (auto* inamic : inamici) {
+                for (const auto* inamic : inamici) {
                     if (inamic->getPozitie().getX() == i && inamic->getPozitie().getY() == j) {
                         std::cout << " E ";
                         inamicGasit = true;

@@ -2,6 +2,7 @@
 #define INAMIC_H
 
 #include "entitate.h"
+#include <string>
 
 class Inamic : public Entitate {
     int puncteAtac;
