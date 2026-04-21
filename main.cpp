@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <memory>
-#include <random>
+#include <string>
 #include "jocdungeon.h"
 #include "jucator.h"
 #include "inamic.h"
@@ -10,77 +9,53 @@
 #include "pistoale.h"
 #include "battlelog.h"
 
-// Structura pentru a simula un eveniment neprevazut
-struct EvenimentDungeon {
-    std::string descriere;
-    int impactHP;
-    int bonusXP;
-};
-
 int main() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1, 100);
-    std::uniform_int_distribution<> dmgDis(5, 15);
-
-    JocDungeon joc("Dungeon of Shadows", 20, 20);
-    Jucator erou("Viteazul", Pozitie(0, 0));
-    std::vector<Inamic*> inamici;
-
-    inamici.push_back(new Inamic("Paznicul Pragului", Pozitie(1, 2), 40));
-    inamici.push_back(new Inamic("Spectra", Pozitie(5, 5), 60));
-    inamici.push_back(new Inamic("Seful Final", Pozitie(10, 10), 120));
-
-    BattleLog::adaugaEveniment("--- SIMULARE DINAMICA INCEPUTA ---");
-
-    for (int camera = 1; camera <= 5; ++camera) {
-        std::cout << "\n>>> EXPLORARE CAMERA " << camera << " <<<\n";
-
-
-        int sansa = dis(gen);
-        EvenimentDungeon ev;
-
-        if (sansa < 30) {
-            ev = {"Ai calcat intr-o capcana cu tepi!", -15, 5};
-        } else if (sansa < 60) {
-            ev = {"Ai gasit o licoare veche pe un piedestal.", 10, 10};
-        } else {
-            ev = {"Camera pare linistita, dar aerul este greu.", 0, 2};
-        }
-
-        erou.primesteDamage(-ev.impactHP);
-        erou.adaugaXP(ev.bonusXP);
-        BattleLog::adaugaEveniment("Eveniment: " + ev.descriere);
-
-        if (camera % 2 == 0 && !inamici.empty()) {
-            Inamic* tinta = inamici.front();
-
-            while (tinta->getHP() > 0 && erou.getHP() > 0) {
-                int atacErou = dmgDis(gen) + (erou.getNivel() * 2);
-                tinta->primesteDamage(atacErou);
-                BattleLog::adaugaEveniment(BattleLog::genereazaDescriereLupta(erou.getNume(), tinta->getNume(), atacErou));
-
-                if (tinta->getHP() > 0) {
-                    int atacInamic = (dmgDis(gen) / 2);
-                    erou.primesteDamage(atacInamic);
-                    BattleLog::adaugaEveniment(BattleLog::genereazaDescriereLupta(tinta->getNume(), erou.getNume(), atacInamic));
-                }
-            }
-
-            if (erou.getHP() > 0) {
-                std::cout << "Inamic invins: " << tinta->getNume() << "\n";
-                erou.adaugaXP(50);
-                delete tinta;
-                inamici.erase(inamici.begin());
-            }
-        }
+    // 1. Folosim GameData (Rezolva getPovesteFundal, getTipuriInamici)
+    std::cout << GameData::getPovesteFundal() << "\n";
+    auto tipuri = GameData::getTipuriInamici();
+    if (!tipuri.empty()) {
+        std::cout << "Primul tip inamic: " << GameData::getDescriereInamic(tipuri[0]) << "\n";
     }
 
-    std::cout << "\n====================================\n";
-    erou.afisare();
-    BattleLog::afiseazaLog();
-    std::cout << "====================================\n";
+    // 2. Initializare Joc (Rezolva initSesiune, getLabirint, getLinii, getColoane)
+    JocDungeon joc("Dungeon Final", 10, 10);
+    joc.initSesiune();
+    const Labirint& lab = joc.getLabirint();
+    std::cout << "Labirint generat: " << lab.getLinii() << "x" << lab.getColoane() << "\n";
 
+    // 3. Jucator si Pozitie (Rezolva setPozitie, getXP, getXPNecesar, getMesajLevelUp)
+    Jucator erou("Viteazul", Pozitie(0, 0));
+    erou.setPozitie(Pozitie(1, 1));
+    std::cout << "Status: " << erou.getXP() << "/" << erou.getXPNecesar() << "\n";
+    std::cout << GameData::getMesajLevelUp(erou.getNivel()) << "\n";
+
+    // 4. Inventar si Obiecte (Rezolva adaugaObiect, reincarca, afiseazaTot, folosesteToate)
+    Inventar rucsac(5);
+    Pistoale* gun = new Pistoale(20, 12);
+    gun->reincarca();
+    rucsac.adaugaObiect(gun);
+    rucsac.afiseazaTot();
+    rucsac.folosesteToate();
+
+    // 5. Inamici si Lupta (Rezolva ataca, afisareGrafica, estePozitieValida, verificaInteractiune)
+    std::vector<Inamic*> inamici;
+    Inamic* boss = new Inamic("Seful Goblins", Pozitie(2, 2), 50);
+    inamici.push_back(boss);
+
+    if (lab.estePozitieValida(2, 2)) {
+        lab.afisareGrafica(erou.getPozitie(), inamici);
+    }
+
+    // Simulam atacul
+    boss->ataca(erou);
+    joc.verificaInteractiune(erou, inamici);
+
+    // 6. BattleLog (Rezolva curataLog)
+    BattleLog::adaugaEveniment("Simulare terminata.");
+    BattleLog::afiseazaLog();
+    BattleLog::curataLog();
+
+    // Cleanup
     for (auto* i : inamici) delete i;
     inamici.clear();
 
