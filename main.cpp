@@ -17,7 +17,7 @@ int main() {
     erou.setPozitie(Pozitie(1, 1));
 
     if (joculMeu.getLabirint().estePozitieValida(1, 1)) {
-        std::cout << "Pozitie confirmata de Labirint.\n";
+        std::cout << "Pozitie valida.\n";
     }
 
     std::vector<Inamic*> listaInamici;
@@ -25,20 +25,22 @@ int main() {
 
     int l = joculMeu.getLabirint().getLinii();
     int c = joculMeu.getLabirint().getColoane();
-    std::cout << "Dimensiuni: " << l << "x" << c << "\n";
+    std::cout << "Labirint " << l << "x" << c << "\n";
 
     joculMeu.getLabirint().afisareGrafica(erou.getPozitie(), listaInamici);
 
-    Inventar* rucsac = new Inventar(5);
+    Inventar rucsac(5);
     Pistoale* p = new Pistoale(20, 12);
     p->reincarca();
-    rucsac->adaugaObiect(p);
-    rucsac->folosesteToate();
+
+    rucsac.adaugaObiect(p);
+
+    rucsac.afiseazaTot();
+    rucsac.folosesteToate();
 
     joculMeu.verificaInteractiune(erou, listaInamici);
 
     for (auto* i : listaInamici) delete i;
-    delete rucsac;
 
     return 0;
 }
