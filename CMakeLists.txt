@@ -79,6 +79,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         pistoale.h
         spear.cpp
         spear.h
+        gamedata.cpp
+        gamedata.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
