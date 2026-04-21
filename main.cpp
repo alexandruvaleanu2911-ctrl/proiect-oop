@@ -10,54 +10,53 @@
 #include "battlelog.h"
 
 int main() {
-    // 1. Folosim GameData (Rezolva getPovesteFundal, getTipuriInamici)
+    // 1. GameData & Intro
     std::cout << GameData::getPovesteFundal() << "\n";
-    auto tipuri = GameData::getTipuriInamici();
-    if (!tipuri.empty()) {
-        std::cout << "Primul tip inamic: " << GameData::getDescriereInamic(tipuri[0]) << "\n";
-    }
 
-    // 2. Initializare Joc (Rezolva initSesiune, getLabirint, getLinii, getColoane)
-    JocDungeon joc("Dungeon Final", 10, 10);
+    // 2. Initializare Jucator
+    Jucator erou("Viteazul", Pozitie(1, 1));
+    erou.setPozitie(Pozitie(2, 2));
+
+    // REPARARE: getHP (afisam HP-ul eroului)
+    std::cout << "HP Initial: " << erou.getHP() << "\n";
+
+    // REPARARE: adaugaXP (apelam metoda)
+    erou.adaugaXP(150);
+    std::cout << "XP: " << erou.getXP() << "/" << erou.getXPNecesar() << "\n";
+
+    // 3. BattleLog & Lupta
+    // REPARARE: genereazaDescriereLupta (trebuie sa salvam/afisam rezultatul)
+    std::string jurnal = BattleLog::genereazaDescriereLupta(erou.getNume(), "Goblin", 30);
+    BattleLog::adaugaEveniment(jurnal);
+    std::cout << "Ultimul eveniment: " << jurnal << "\n";
+
+    // 4. Joc & Labirint
+    JocDungeon joc("Test", 10, 10);
     joc.initSesiune();
     const Labirint& lab = joc.getLabirint();
-    std::cout << "Labirint generat: " << lab.getLinii() << "x" << lab.getColoane() << "\n";
-
-    // 3. Jucator si Pozitie (Rezolva setPozitie, getXP, getXPNecesar, getMesajLevelUp)
-    Jucator erou("Viteazul", Pozitie(0, 0));
-    erou.setPozitie(Pozitie(1, 1));
-    std::cout << "Status: " << erou.getXP() << "/" << erou.getXPNecesar() << "\n";
-    std::cout << GameData::getMesajLevelUp(erou.getNivel()) << "\n";
-
-    // 4. Inventar si Obiecte (Rezolva adaugaObiect, reincarca, afiseazaTot, folosesteToate)
-    Inventar rucsac(5);
-    Pistoale* gun = new Pistoale(20, 12);
-    gun->reincarca();
-    rucsac.adaugaObiect(gun);
-    rucsac.afiseazaTot();
-    rucsac.folosesteToate();
-
-    // 5. Inamici si Lupta (Rezolva ataca, afisareGrafica, estePozitieValida, verificaInteractiune)
-    std::vector<Inamic*> inamici;
-    Inamic* boss = new Inamic("Seful Goblins", Pozitie(2, 2), 50);
-    inamici.push_back(boss);
 
     if (lab.estePozitieValida(2, 2)) {
+        std::vector<Inamic*> inamici;
+        Inamic* g = new Inamic("Goblin", Pozitie(2, 2), 20);
+        inamici.push_back(g);
+
         lab.afisareGrafica(erou.getPozitie(), inamici);
+        joc.verificaInteractiune(erou, inamici);
+
+        delete g;
     }
 
-    // Simulam atacul
-    boss->ataca(erou);
-    joc.verificaInteractiune(erou, inamici);
+    // 5. Inventar
+    Inventar inv(5);
+    Pistoale* p = new Pistoale(10, 6);
+    p->reincarca();
+    inv.adaugaObiect(p);
+    inv.afiseazaTot();
+    inv.folosesteToate();
 
-    // 6. BattleLog (Rezolva curataLog)
-    BattleLog::adaugaEveniment("Simulare terminata.");
+    // 6. Finalizare
     BattleLog::afiseazaLog();
     BattleLog::curataLog();
-
-    // Cleanup
-    for (auto* i : inamici) delete i;
-    inamici.clear();
 
     return 0;
 }
