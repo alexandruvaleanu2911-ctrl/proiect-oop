@@ -5,7 +5,6 @@
 #include "jucator.h"
 #include "inamic.h"
 #include "inventar.h"
-#include "sabie.h"
 #include "pistoale.h"
 
 int main() {
@@ -18,10 +17,14 @@ int main() {
     Jucator erou(nume, Pozitie(1, 1));
     erou.adaugaXP(50);
 
+    erou.setPozitie(Pozitie(1, 1));
+
     std::vector<Inamic*> listaInamici;
     listaInamici.push_back(new Inamic("Goblin", Pozitie(2, 2), 15));
 
-    if (joculMeu.getLabirint().estePozitieValida(1, 1)) {
+    int l = joculMeu.getLabirint().getLinii();
+    int c = joculMeu.getLabirint().getColoane();
+    if (l > 0 && c > 0) {
         joculMeu.getLabirint().afisareGrafica(erou.getPozitie(), listaInamici);
     }
 
