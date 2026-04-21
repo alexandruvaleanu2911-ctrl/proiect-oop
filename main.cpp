@@ -45,5 +45,12 @@ int main() {
     delete rucsac;
 
     std::cout << "\n--- AVENTURA S-A INCHEIAT ---" << std::endl;
+    erou.adaugaXP(10);
+    erou.setPozitie(Pozitie(1, 1));
+    if(joculMeu.getLabirint().estePozitieValida(1,1)) {
+        // doar pentru test
+    }
+    int l = joculMeu.getLabirint().getLinii();
+    int c = joculMeu.getLabirint().getColoane();
     return 0;
 }

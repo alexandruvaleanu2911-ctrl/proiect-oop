@@ -14,7 +14,7 @@ class JocDungeon {
 public:
     JocDungeon(std::string nume, int l, int c);
     void initSesiune();
-    void verificaInteractiune(Jucator& p, std::vector<Inamic*>& inamici);
+    static void verificaInteractiune(Jucator& p, std::vector<Inamic*>& inamici);
 
     Labirint& getLabirint() { return labirint; }
     const Labirint& getLabirint() const { return labirint; }
