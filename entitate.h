@@ -22,7 +22,7 @@ public:
 
     Pozitie getPozitie() const { return pos; }
     void setPozitie(Pozitie p) { pos = p; }
-    std::string getNume() const { return nume; }
+    std::string const& getNume() const { return nume; }
     int getHP() const { return hp; }
     void primesteDamage(int dmg);
 };

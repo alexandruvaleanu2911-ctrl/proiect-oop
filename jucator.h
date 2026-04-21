@@ -9,7 +9,7 @@ class Jucator : public Entitate {
     int xpNecesar;
 
 public:
-    Jucator(std::string n, Pozitie p);
+    Jucator(const std::string& n, Pozitie p);
     void actioneaza() override;
     void adaugaXP(int xp);
     void crescInNivel();

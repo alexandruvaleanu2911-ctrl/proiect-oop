@@ -1,7 +1,7 @@
 #include "jucator.h"
 #include <iostream>
 
-Jucator::Jucator(std::string n, Pozitie p)
+Jucator::Jucator(const std::string& n, Pozitie p)
     : Entitate(n, p, 100, 15, 5), nivel(1), xpCurent(0), xpNecesar(100) {}
 
 void Jucator::actioneaza() {
