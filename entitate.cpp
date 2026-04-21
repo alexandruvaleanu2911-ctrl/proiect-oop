@@ -1,9 +1,11 @@
 #include "entitate.h"
-#include <iostream>
-#include <utility>
 
-Entitate::Entitate(const std::string& n, Pozitie p, int v) : nume(n), pos(p), viata(v) {}
+Entitate::Entitate(std::string n, Pozitie p, int health, int atk, int def)
+    : nume(n), pos(p), hp(health), hpMax(health), atac(atk), aparare(def) {}
 
-void Entitate::afisare() const {
-    std::cout << nume << " se afla la " << pos << " HP: " << viata;
+void Entitate::primesteDamage(int dmg) {
+    int damageReal = dmg - aparare;
+    if (damageReal < 0) damageReal = 0;
+    hp -= damageReal;
+    if (hp < 0) hp = 0;
 }
