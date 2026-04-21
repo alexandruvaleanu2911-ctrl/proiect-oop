@@ -13,7 +13,7 @@ public:
     void actioneaza() override;
     void adaugaXP(int xp);
     void crescInNivel();
-
+    void afisare() const override;
     int getNivel() const { return nivel; }
     int getXP() const { return xpCurent; }
     int getXPNecesar() const { return xpNecesar; }

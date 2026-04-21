@@ -23,6 +23,7 @@ int main() {
     std::vector<Inamic*> listaInamici;
     listaInamici.push_back(new Inamic("Goblin", Pozitie(2, 2), 15));
 
+
     int l = joculMeu.getLabirint().getLinii();
     int c = joculMeu.getLabirint().getColoane();
     std::cout << "Labirint " << l << "x" << c << "\n";
