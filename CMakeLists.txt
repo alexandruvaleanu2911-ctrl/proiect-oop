@@ -81,6 +81,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         spear.h
         gamedata.cpp
         gamedata.h
+        battlelog.cpp
+        battlelog.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
