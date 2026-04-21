@@ -6,22 +6,28 @@
 #include "gamedata.h"
 #include "inventar.h"
 #include "pistoale.h"
+#include "battlelog.h"
 
 int main() {
     std::cout << GameData::getPovesteFundal() << "\n";
-    std::cout << "Tipuri: " << GameData::getTipuriInamici().size() << "\n";
-    std::cout << GameData::getDescriereInamic("Goblin") << "\n";
+    
+    BattleLog::adaugaEveniment("Sesiune noua inceputa.");
+    std::string descriere = BattleLog::genereazaDescriereLupta("Erou", "Goblin", 25);
+    BattleLog::adaugaEveniment(descriere);
+    BattleLog::afiseazaLog();
+    BattleLog::curataLog();
 
-    JocDungeon joc("Test", 10, 10);
+    JocDungeon joc("Dungeon Test", 10, 10);
     joc.initSesiune();
 
     Jucator erou("Erou", Pozitie(1, 1));
-    erou.setPozitie(Pozitie(1, 1));
     erou.afisare();
     erou.adaugaXP(150);
-
-    std::cout << "Statistici: HP " << erou.getHP() << ", XP " << erou.getXP() << "/" << erou.getXPNecesar() << "\n";
+    
+    std::cout << "Statistici: HP " << erou.getHP() << ", XP " << erou.getXP() << "\n";
     std::cout << "Mesaj: " << GameData::getMesajLevelUp(erou.getNivel()) << "\n";
+    std::cout << "Descriere inamic: " << GameData::getDescriereInamic("Orc") << "\n";
+    std::cout << "Tipuri: " << GameData::getTipuriInamici().size() << "\n";
 
     std::cout << "Labirint: " << joc.getLabirint().getLinii() << "x" << joc.getLabirint().getColoane() << "\n";
 
@@ -38,7 +44,7 @@ int main() {
 
     goblin->afisare();
     goblin->ataca(erou);
-
+    
     if(joc.getLabirint().estePozitieValida(1, 1)) {
         joc.getLabirint().afisareGrafica(erou.getPozitie(), inamici);
     }
@@ -46,6 +52,6 @@ int main() {
     joc.verificaInteractiune(erou, inamici);
 
     for (auto* i : inamici) delete i;
-
+    
     return 0;
 }
