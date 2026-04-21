@@ -10,53 +10,54 @@
 #include "battlelog.h"
 
 int main() {
-    // 1. GameData & Intro
     std::cout << GameData::getPovesteFundal() << "\n";
 
-    // 2. Initializare Jucator
+    JocDungeon joc("Dungeon Final", 15, 10);
+    joc.initSesiune();
+
+    const Labirint& lab = joc.getLabirint();
+    int linii = lab.getLinii();
+    int coloane = lab.getColoane();
+    std::cout << "Dimensiuni: " << linii << "x" << coloane << "\n";
+
     Jucator erou("Viteazul", Pozitie(1, 1));
     erou.setPozitie(Pozitie(2, 2));
+    erou.adaugaXP(200);
 
-    // REPARARE: getHP (afisam HP-ul eroului)
-    std::cout << "HP Initial: " << erou.getHP() << "\n";
+    std::cout << "Nivel erou: " << erou.getNivel() << "\n";
+    std::cout << "HP: " << erou.getHP() << " | XP: " << erou.getXP() << "/" << erou.getXPNecesar() << "\n";
+    std::cout << GameData::getMesajLevelUp(erou.getNivel()) << "\n";
 
-    // REPARARE: adaugaXP (apelam metoda)
-    erou.adaugaXP(150);
-    std::cout << "XP: " << erou.getXP() << "/" << erou.getXPNecesar() << "\n";
-
-    // 3. BattleLog & Lupta
-    // REPARARE: genereazaDescriereLupta (trebuie sa salvam/afisam rezultatul)
-    std::string jurnal = BattleLog::genereazaDescriereLupta(erou.getNume(), "Goblin", 30);
-    BattleLog::adaugaEveniment(jurnal);
-    std::cout << "Ultimul eveniment: " << jurnal << "\n";
-
-    // 4. Joc & Labirint
-    JocDungeon joc("Test", 10, 10);
-    joc.initSesiune();
-    const Labirint& lab = joc.getLabirint();
-
-    if (lab.estePozitieValida(2, 2)) {
-        std::vector<Inamic*> inamici;
-        Inamic* g = new Inamic("Goblin", Pozitie(2, 2), 20);
-        inamici.push_back(g);
-
-        lab.afisareGrafica(erou.getPozitie(), inamici);
-        joc.verificaInteractiune(erou, inamici);
-
-        delete g;
+    std::vector<std::string> tipuri = GameData::getTipuriInamici();
+    for(const auto& t : tipuri) {
+        std::cout << "Inamic disponibil: " << GameData::getDescriereInamic(t) << "\n";
     }
 
-    // 5. Inventar
-    Inventar inv(5);
-    Pistoale* p = new Pistoale(10, 6);
-    p->reincarca();
-    inv.adaugaObiect(p);
-    inv.afiseazaTot();
-    inv.folosesteToate();
+    std::vector<Inamic*> inamici;
+    Inamic* boss = new Inamic("Seful Goblins", Pozitie(2, 2), 50);
+    inamici.push_back(boss);
 
-    // 6. Finalizare
+    if (lab.estePozitieValida(2, 2)) {
+        lab.afisareGrafica(erou.getPozitie(), inamici);
+        boss->ataca(erou);
+    }
+
+    Inventar rucsac(5);
+    Pistoale* gun = new Pistoale(25, 12);
+    gun->reincarca();
+    rucsac.adaugaObiect(gun);
+    rucsac.afiseazaTot();
+    rucsac.folosesteToate();
+
+    std::string jurnal = BattleLog::genereazaDescriereLupta(erou.getNume(), boss->getNume(), 30);
+    BattleLog::adaugaEveniment(jurnal);
     BattleLog::afiseazaLog();
     BattleLog::curataLog();
+
+    joc.verificaInteractiune(erou, inamici);
+
+    for (auto* i : inamici) delete i;
+    inamici.clear();
 
     return 0;
 }
