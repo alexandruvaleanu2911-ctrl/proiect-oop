@@ -4,12 +4,9 @@
 #include "entitate.h"
 
 class Inamic : public Entitate {
-private:
-    int putereAtac;
-
+    int puncteAtac;
 public:
-    Inamic(std::string n, Pozitie p, int atac);
-    
+    Inamic(const std::string& n, Pozitie p, int atac);
     void actioneaza() override;
     void afisare() const override;
 };

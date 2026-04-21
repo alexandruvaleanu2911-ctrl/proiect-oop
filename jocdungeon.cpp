@@ -1,37 +1,28 @@
 #include "jocdungeon.h"
+#include <iostream>
 
-JocDungeon::JocDungeon(const std::string& nume, int w, int h) : numeJucator(nume) {
-    labirint = new Labirint(w, h);
-}
-
-JocDungeon::~JocDungeon() {
-    delete labirint;
-}
-
-JocDungeon::JocDungeon(const JocDungeon& altul) : numeJucator(altul.numeJucator) {
-    labirint = new Labirint(*altul.labirint);
-}
-
-JocDungeon& JocDungeon::operator=(const JocDungeon& altul) {
-    if (this != &altul) {
-        delete labirint;
-        numeJucator = altul.numeJucator;
-        labirint = new Labirint(*altul.labirint);
-    }
-    return *this;
-}
-
-double JocDungeon::calculeazaDificultate() {
-    return 0.5;
-}
+JocDungeon::JocDungeon(std::string nume, int l, int c) : numeSesiune(nume), labirint(l, c) {}
 
 void JocDungeon::initSesiune() {
-    labirint->genereaza(1, 1);
-    std::cout << "Sesiune pornita pentru: " << numeJucator << "\n";
+    labirint.genereazaLabirint();
+    std::cout << "Sesiunea " << numeSesiune << " a fost initializata.\n";
 }
 
-std::ostream& operator<<(std::ostream& os, const JocDungeon& j) {
-    os << "Jucator: " << j.numeJucator << "\nDificultate: " << JocDungeon::calculeazaDificultate() << "\n";
-    os << *j.labirint;
+void JocDungeon::verificaInteractiune(Jucator& p, std::vector<Inamic*>& inamici) {
+    for (auto it = inamici.begin(); it != inamici.end(); ) {
+        if ((*it)->getPozitie().getX() == p.getPozitie().getX() &&
+            (*it)->getPozitie().getY() == p.getPozitie().getY()) {
+            std::cout << "Batalia incepe! Te-ai intalnit cu " << (*it)->getNume() << "!\n";
+            p.actioneaza();
+            delete *it;
+            it = inamici.erase(it);
+            } else {
+                ++it;
+            }
+    }
+}
+
+std::ostream& operator<<(std::ostream& os, const JocDungeon& joc) {
+    os << "Joc: " << joc.numeSesiune;
     return os;
 }

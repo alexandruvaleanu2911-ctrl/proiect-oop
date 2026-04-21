@@ -2,21 +2,24 @@
 #define JOCDUNGEON_H
 
 #include <string>
-#include <iostream>
+#include <vector>
 #include "labirint.h"
+#include "jucator.h"
+#include "inamic.h"
 
 class JocDungeon {
-    std::string numeJucator;
-    Labirint* labirint;
-public:
-    JocDungeon(const std::string& nume, int w, int h);
-    ~JocDungeon();
-    JocDungeon(const JocDungeon& altul);
-    JocDungeon& operator=(const JocDungeon& altul);
+    std::string numeSesiune;
+    Labirint labirint;
 
-    static double calculeazaDificultate();
+public:
+    JocDungeon(std::string nume, int l, int c);
     void initSesiune();
-    friend std::ostream& operator<<(std::ostream& os, const JocDungeon& j);
+    void verificaInteractiune(Jucator& p, std::vector<Inamic*>& inamici);
+
+    Labirint& getLabirint() { return labirint; }
+    const Labirint& getLabirint() const { return labirint; }
+
+    friend std::ostream& operator<<(std::ostream& os, const JocDungeon& joc);
 };
 
 #endif

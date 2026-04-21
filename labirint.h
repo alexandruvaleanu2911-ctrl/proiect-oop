@@ -2,23 +2,23 @@
 #define LABIRINT_H
 
 #include <vector>
-#include <stack>
-#include <random>
-#include <algorithm>
 #include "celula.h"
 #include "pozitie.h"
+#include "inamic.h"
 
 class Labirint {
-    int latime, inaltime;
-    std::vector<std::vector<Celula>> grija;
-
-    void initializeazaGrid();
-    std::vector<Pozitie> gasesteVeciniVizitabili(const Pozitie& p) const;
+    int linii;
+    int coloane;
+    std::vector<std::vector<Celula>> harta;
 
 public:
-    Labirint(int w, int h);
-    void genereaza(int startX, int startY);
-    friend std::ostream& operator<<(std::ostream& os, const Labirint& l);
+    Labirint(int l, int c);
+    void genereazaLabirint();
+    void afisareGrafica(const Pozitie& posJucator, const std::vector<Inamic*>& inamici) const;
+
+    int getLinii() const { return linii; }
+    int getColoane() const { return coloane; }
+    bool estePozitieValida(int x, int y) const;
 };
 
 #endif
