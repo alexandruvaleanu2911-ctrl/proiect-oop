@@ -21,10 +21,16 @@ int main() {
     joc.initSesiune();
 
     Jucator erou("Erou", Pozitie(1, 1));
+
+
+    erou.setPozitie(Pozitie(2, 2));
+
     erou.afisare();
     erou.adaugaXP(150);
-    
-    std::cout << "Statistici: HP " << erou.getHP() << ", XP " << erou.getXP() << "\n";
+
+
+    std::cout << "Statistici: HP " << erou.getHP() << ", XP " << erou.getXP() << "/" << erou.getXPNecesar() << "\n";
+
     std::cout << "Mesaj: " << GameData::getMesajLevelUp(erou.getNivel()) << "\n";
     std::cout << "Descriere inamic: " << GameData::getDescriereInamic("Orc") << "\n";
     std::cout << "Tipuri: " << GameData::getTipuriInamici().size() << "\n";
