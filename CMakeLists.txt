@@ -83,6 +83,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         gamedata.h
         battlelog.cpp
         battlelog.h
+        radar.cpp
+        radar.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

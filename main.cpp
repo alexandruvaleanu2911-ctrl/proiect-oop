@@ -8,6 +8,7 @@
 #include "inventar.h"
 #include "pistoale.h"
 #include "battlelog.h"
+#include "radar.h"
 
 int main() {
     std::cout << GameData::getPovesteFundal() << "\n";
@@ -59,5 +60,10 @@ int main() {
     for (auto* i : inamici) delete i;
     inamici.clear();
 
+    Radar miniMap(4);
+    miniMap.afiseazaRadar(erou.getPozitie(), inamici);
+    std::cout << miniMap.getDistantaPanaLaCelMaiApropiat(erou.getPozitie(), inamici) << "\n";
+
     return 0;
+
 }
