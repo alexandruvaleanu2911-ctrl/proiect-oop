@@ -14,7 +14,7 @@ private:
     char simbolGol;
 
 public:
-    Radar(int raza = 5);
+    explicit Radar(int raza = 5);
     void afiseazaRadar(const Pozitie& posJucator, const std::vector<Inamic*>& inamici) const;
     std::string getDistantaPanaLaCelMaiApropiat(const Pozitie& posJucator, const std::vector<Inamic*>& inamici) const;
 };

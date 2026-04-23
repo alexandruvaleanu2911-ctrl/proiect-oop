@@ -63,6 +63,9 @@ int main() {
     Radar miniMap(4);
     miniMap.afiseazaRadar(erou.getPozitie(), inamici);
     std::cout << miniMap.getDistantaPanaLaCelMaiApropiat(erou.getPozitie(), inamici) << "\n";
+    std::cout << "Coloane labirint: " << lab.getColoane() << "\n";
+    std::cout << "Linii labirint: " << lab.getLinii() << "\n";
+    std::cout << "Nivel Jucator: " << erou.getNivel() << "\n";
 
     return 0;
 
